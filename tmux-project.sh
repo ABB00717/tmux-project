@@ -1,23 +1,13 @@
 #!/bin/sh
 
-
 if [ -z $1 ]; then
     echo "Wrong usage!"
-    exit;
+    exit 1
 fi
 
-# Regex is soooo fucking gross
-#
-# Match the last '/'
-# .*/
-# Catch all the characters that is not '/'
-# \([^/]*\)
-# Deal with the tailing '/'
-# /\?
-# The end
-# $
-WORKING_DIR=$1
-NEW_SESSION=`expr "$WORKING_DIR" : '.*/\([^/]*\)/\?$'`
+# Simplify the session-name
+WORKING_DIR="$1"
+NEW_SESSION=$(basename "$WORKING_DIR")
 
 # tmux open new session (detach immediately since the script isn't finish yet)
 tmux new -d -c $WORKING_DIR -s $NEW_SESSION
